@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { Role } from "../generated/prisma/enums";
 
 export async function signUpAction(formData: FormData) {
     await auth.api.signUpEmail({
@@ -10,6 +11,7 @@ export async function signUpAction(formData: FormData) {
             name: formData.get("name") as string,
             email: formData.get("email") as string,
             password: formData.get("password") as string,
+            role: (formData.get("role") as string) || Role.CUSTOMER,
         }
     });
 
