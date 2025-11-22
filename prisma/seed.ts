@@ -1,7 +1,20 @@
-import prisma from "@/lib/prisma";
-import { Role } from "@/app/generated/prisma/enums";
+import { PrismaClient, Prisma, Role } from "../app/generated/prisma/client";
+import { PrismaPg } from '@prisma/adapter-pg'
+import 'dotenv/config'
 
-async function main() {
+const adapter = new PrismaPg({
+    connectionString: process.env.DATABASE_URL,
+})
+
+const prisma = new PrismaClient({
+    adapter,
+});
+
+console.log(process.env.DATABASE_URL)
+
+export async function main() {
+    console.log("Seeding database...");
+
     // USERS
     const admin = await prisma.user.create({
         data: {
@@ -134,11 +147,3 @@ async function main() {
 }
 
 main()
-    .then(async () => {
-        await prisma.$disconnect();
-    })
-    .catch(async (e) => {
-        console.error(e);
-        await prisma.$disconnect();
-        process.exit(1);
-    });
