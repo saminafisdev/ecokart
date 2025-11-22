@@ -1,20 +1,34 @@
+import { auth } from "@/lib/auth";
 import { Box, Carousel, HStack, IconButton, Image, Stack, Text } from "@chakra-ui/react";
+import { headers } from "next/headers";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
-const items = Array.from({ length: 5 })
+const items = [
+  { id: 1, src: "/banners/sale.png", alt: "Big Sale Banner" },
+  { id: 2, src: "/banners/electronics.png", alt: "Electronics Banner" },
+  { id: 3, src: "/banners/winter.png", alt: "Winter Collection Banner" },
+]
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  if (session) {
+    console.log(session.user)
+  }
+
   return (
     <Box py="12">
       <Carousel.Root slideCount={items.length} mx="auto">
         <Carousel.ItemGroup>
-          {items.map((_, index) => (
-            <Carousel.Item key={index} index={index}>
+          {items.map((item, index) => (
+            <Carousel.Item key={item.id} index={index}>
               <Box w="100%" h="500px" rounded="lg" fontSize="2.5rem">
                 <Image
                   aspectRatio="16/9"
-                  src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt={"Carousel image"}
+                  src={item.src}
+                  alt={item.alt}
                   w="100%"
                   h="100%"
                   objectFit="cover"

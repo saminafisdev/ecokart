@@ -1,0 +1,198 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  VENDOR
+  CUSTOMER
+}
+
+model User {
+  id            String     @id
+  name          String
+  email         String
+  emailVerified Boolean    @default(false)
+  image         String?
+  role          Role       @default(CUSTOMER)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(now()) @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  stores        Store[]
+  cartItems     CartItem[]
+  orders        Order[]
+  reviews       Review[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@map("verification")
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model Store {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  vendorId    String
+  vendor      User     @relation(fields: [vendorId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+}
+
+model Category {
+  id               String     @id @default(cuid())
+  name             String     @unique
+  slug             String     @unique
+  parentCategory   Category?  @relation("Subcategories", fields: [parentCategoryId], references: [id])
+  parentCategoryId String?
+  subcategories    Category[] @relation("Subcategories")
+
+  products Product[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  price       Decimal
+  stock       Int
+  imageUrl    String[] @default([])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  storeId String
+  store   Store  @relation(fields: [storeId], references: [id])
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  orderItems OrderItem[]
+  cartItems  CartItem[]
+  reviews    Review[]
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  status          OrderStatus @default(PENDING)
+  totalAmount     Decimal
+  shippingAddress Json // Store address details as JSON
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  customerId String
+  customer   User   @relation(fields: [customerId], references: [id])
+
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  quantity  Int
+  price     Decimal // Price at the time of order
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  customerId String
+  customer   User   @relation(fields: [customerId], references: [id])
+
+  @@unique([productId, customerId]) // A user can only review a product once
+}
