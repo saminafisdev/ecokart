@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Provider } from "@/components/ui/provider";
 import Navbar from "@/components/navbar";
-import { Container } from "@chakra-ui/react";
+import { Container, Alert } from "@chakra-ui/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +30,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Provider>
+          <Alert.Root status="warning" borderRadius={0}>
+            <Alert.Indicator />
+            <Alert.Title>
+              🚧 This site is currently in development. Features may be unstable.
+            </Alert.Title>
+          </Alert.Root>
           <Navbar />
           <Container>
             {children}
