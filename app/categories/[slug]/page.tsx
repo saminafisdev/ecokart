@@ -14,6 +14,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         }
     });
 
+
     if (!category) {
         notFound();
     }
@@ -43,7 +44,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             <Heading mb={2} size="2xl">{category.name}</Heading>
 
             <Box borderBottom={"1px solid"} borderColor="gray.200" pb={4} mb={8}>
-                <Text color="gray.500">{category.products.length} results</Text>
+                {/* <Text color="gray.500">{category.products.length} results</Text> */}
             </Box>
 
             <Flex gap={10} direction={{ base: "column", md: "row" }} align="start">
@@ -66,9 +67,59 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                 {/* Main Content */}
                 <Box flex="1" w="full">
                     {category.products.length === 0 ? (
-                        <Box textAlign="center" py={10} bg="gray.50" borderRadius="md">
-                            <Text fontSize="lg" color="gray.500">No products found in this category.</Text>
-                        </Box>
+                        category.subcategories.length > 0 ? (
+                            <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} gap={6}>
+                                {category.subcategories.map((sub) => (
+                                    <ChakraLink asChild key={sub.id} _hover={{ textDecoration: "none" }}>
+                                        <Link href={`/categories/${sub.slug}`}>
+                                            <Box
+                                                position="relative"
+                                                borderRadius="xl"
+                                                overflow="hidden"
+                                                aspectRatio={4 / 3}
+                                                role="group"
+                                            >
+                                                <Image
+                                                    src={sub.imageUrl || "https://placehold.co/600x400?text=No+Image"}
+                                                    alt={sub.name}
+                                                    objectFit="cover"
+                                                    w="full"
+                                                    h="full"
+                                                    transition="transform 0.3s"
+                                                    _groupHover={{ transform: "scale(1.05)" }}
+                                                />
+                                                <Box
+                                                    position="absolute"
+                                                    bottom={0}
+                                                    left={0}
+                                                    right={0}
+                                                    h="60%"
+                                                    background="linear-gradient(to top, rgba(0,0,0,0.8), transparent)"
+                                                    display="flex"
+                                                    alignItems="flex-end"
+                                                    justifyContent="center"
+                                                    p={4}
+                                                >
+                                                    <Text
+                                                        color="white"
+                                                        fontWeight="bold"
+                                                        fontSize="xl"
+                                                        textAlign="center"
+                                                        mb={2}
+                                                    >
+                                                        {sub.name}
+                                                    </Text>
+                                                </Box>
+                                            </Box>
+                                        </Link>
+                                    </ChakraLink>
+                                ))}
+                            </SimpleGrid>
+                        ) : (
+                            <Box textAlign="center" py={10} bg="gray.50" borderRadius="md">
+                                <Text fontSize="lg" color="gray.500">No products found in this category.</Text>
+                            </Box>
+                        )
                     ) : (
                         <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={6}>
                             {category.products.map((product) => (

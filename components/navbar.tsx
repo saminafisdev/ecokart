@@ -1,5 +1,6 @@
 import { Box, Button, Container, Flex, HStack, Icon, Input, InputGroup, Text } from "@chakra-ui/react";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
 import { signOutAction } from "@/app/actions/auth";
@@ -31,7 +32,7 @@ export default async function Navbar() {
                     <HStack gap={4} order={{ base: 2, md: 3 }}>
                         <form action={signOutAction}>
                             <Button type="submit" size={"md"} variant={"ghost"}>
-                                <FaUser />
+                                <FaRegUser />
                                 {
                                     session?.user && (
                                         <Text>Welcome {session.user.name}</Text>
@@ -41,7 +42,7 @@ export default async function Navbar() {
                         </form>
                         <Link href="/cart">
                             <Icon size={"md"}>
-                                <FaShoppingCart />
+                                <AiOutlineShoppingCart />
                             </Icon>
                         </Link>
                     </HStack>

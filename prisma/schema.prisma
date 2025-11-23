@@ -109,6 +109,7 @@ model Category {
   id               String     @id @default(cuid())
   name             String     @unique
   slug             String     @unique
+  imageUrl         String?
   parentCategory   Category?  @relation("Subcategories", fields: [parentCategoryId], references: [id])
   parentCategoryId String?
   subcategories    Category[] @relation("Subcategories")

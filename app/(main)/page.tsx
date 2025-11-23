@@ -20,7 +20,7 @@ export default async function Home() {
 
   return (
     <Box py="12">
-      <Carousel.Root slideCount={items.length} mx="auto">
+      <Carousel.Root slideCount={items.length} mx="auto" autoplay>
         <Carousel.ItemGroup>
           {items.map((item, index) => (
             <Carousel.Item key={item.id} index={index}>
