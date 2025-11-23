@@ -12,7 +12,7 @@ import {
     Fieldset
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { loginAction } from "../actions/auth";
+import { loginAction } from "../../actions/auth";
 
 export default function SignInPage() {
     return (

@@ -36,7 +36,6 @@ export default function RootLayout({
               🚧 This site is currently in development. Features may be unstable.
             </Alert.Title>
           </Alert.Root>
-          <Navbar />
           <Container>
             {children}
           </Container>

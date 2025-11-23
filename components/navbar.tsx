@@ -30,7 +30,7 @@ export default async function Navbar() {
                     </Box>
 
                     <HStack gap={4} order={{ base: 2, md: 3 }}>
-                        <form action={signOutAction}>
+                        {/* <form action={signOutAction}>
                             <Button type="submit" size={"md"} variant={"ghost"}>
                                 <FaRegUser />
                                 {
@@ -39,7 +39,14 @@ export default async function Navbar() {
                                     )
                                 }
                             </Button>
-                        </form>
+                        </form> */}
+                        <Button variant={"ghost"} asChild>
+                            <Link href="/login">
+                                <Icon size={"md"}>
+                                    <FaRegUser />
+                                </Icon>
+                            </Link>
+                        </Button>
                         <Link href="/cart">
                             <Icon size={"md"}>
                                 <AiOutlineShoppingCart />
