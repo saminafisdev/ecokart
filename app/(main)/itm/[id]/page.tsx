@@ -2,9 +2,12 @@ import { Avatar, Box, Button, Carousel, Heading, Image, Stack, Text } from "@cha
 import SimilarItems from "@/components/similar-items";
 import ProductDetails from "@/components/product-details";
 import prisma from "@/lib/prisma";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { getServerSession } from "@/lib/get-server-session";
+import { AddToCartButton } from "@/components/add-to-cart";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+    const session = await getServerSession();
     const { id } = await params;
 
     const product = await prisma.product.findUnique({
@@ -22,6 +25,18 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     if (!product) {
         notFound();
     }
+
+    const existingCartItem = session?.user.id
+        ? await prisma.cartItem.findFirst({
+            where: {
+                productId: product.id,
+                userId: session.user.id,
+            },
+        })
+        : null;
+
+    const isProductInCart = !!existingCartItem;
+
 
     // Use product images or fallback
     const images = product.imageUrl.length > 0
@@ -108,15 +123,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                         >
                             Buy it now
                         </Button>
-                        <Button
-                            size={{ base: "lg", md: "xl" }}
-                            variant={"outline"}
-                            colorPalette={"green"}
-                            borderRadius={"full"}
-                            disabled={product.stock <= 0}
-                        >
-                            Add to cart
-                        </Button>
+                        <AddToCartButton productId={product.id} userId={session?.user.id} stock={product.stock} isProductInCart={isProductInCart} />
                         <Button size={{ base: "lg", md: "xl" }} variant={"outline"} colorPalette={"green"} borderRadius={"full"}>
                             Add to wishlist
                         </Button>
