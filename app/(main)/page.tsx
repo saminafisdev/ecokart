@@ -24,7 +24,7 @@ export default async function Home() {
         <Carousel.ItemGroup>
           {items.map((item, index) => (
             <Carousel.Item key={item.id} index={index}>
-              <Box w="100%" h="500px" rounded="lg" fontSize="2.5rem">
+              <Box w="100%" h={{ base: "200px", md: "300px", lg: "500px" }} rounded="lg" fontSize="2.5rem">
                 <Image
                   aspectRatio="16/9"
                   src={item.src}
@@ -60,46 +60,74 @@ export default async function Home() {
         <Box as={"section"}>
           <Text fontWeight={"semibold"} fontSize={"2xl"}>Top Cateogries</Text>
           <HStack mt="5" gap="5" overflowX="auto" whiteSpace="nowrap" pb="4" w="full">
-            <Box flexShrink={0}>
-              <Image width={150} height={150} mx={"auto"} borderRadius={"full"} src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=1201&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-              <Text fontWeight={"semibold"} textAlign={"center"}>Computer and Accessories</Text>
+            <Box flexShrink={0} w={{ base: "120px", md: "150px" }}>
+              <Image
+                w="100%"
+                h="auto"
+                aspectRatio="1/1"
+                mx={"auto"}
+                borderRadius={"full"}
+                src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=1201&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              />
+              <Text fontWeight={"semibold"} textAlign={"center"} whiteSpace="normal">Computer and Accessories</Text>
             </Box>
-            <Box flexShrink={0}>
-              <Image width={150} height={150} mx={"auto"} borderRadius={"full"} src="https://images.unsplash.com/photo-1622810917846-719511f8e618?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8a25pZmUlMjBjaG9wYm9hcmR8ZW58MHx8MHx8fDA%3D" />
-              <Text fontWeight={"semibold"} textAlign={"center"}>Kitchen Essentials</Text>
+            <Box flexShrink={0} w={{ base: "120px", md: "150px" }}>
+              <Image
+                w="100%"
+                h="auto"
+                aspectRatio="1/1"
+                mx={"auto"}
+                borderRadius={"full"}
+                src="https://images.unsplash.com/photo-1622810917846-719511f8e618?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8a25pZmUarezBjaG9wYm9hcmR8ZW58MHx8MHx8fDA%3D"
+              />
+              <Text fontWeight={"semibold"} textAlign={"center"} whiteSpace="normal">Kitchen Essentials</Text>
             </Box>
-            <Box flexShrink={0}>
-              <Image width={150} height={150} mx={"auto"} borderRadius={"full"} src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFrZXVwfGVufDB8fDB8fHww" />
-              <Text fontWeight={"semibold"} textAlign={"center"}>Makeup</Text>
+            <Box flexShrink={0} w={{ base: "120px", md: "150px" }}>
+              <Image
+                w="100%"
+                h="auto"
+                aspectRatio="1/1"
+                mx={"auto"}
+                borderRadius={"full"}
+                src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFrZXVwfGVufDB8fDB8fHww"
+              />
+              <Text fontWeight={"semibold"} textAlign={"center"} whiteSpace="normal">Makeup</Text>
             </Box>
-            <Box flexShrink={0}>
-              <Image width={150} height={150} mx={"auto"} borderRadius={"full"} src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-              <Text fontWeight={"semibold"} textAlign={"center"}>Furniture</Text>
+            <Box flexShrink={0} w={{ base: "120px", md: "150px" }}>
+              <Image
+                w="100%"
+                h="auto"
+                aspectRatio="1/1"
+                mx={"auto"}
+                borderRadius={"full"}
+                src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              />
+              <Text fontWeight={"semibold"} textAlign={"center"} whiteSpace="normal">Furniture</Text>
             </Box>
           </HStack>
         </Box>
         <Box as={"section"}>
           <Text fontWeight={"semibold"} fontSize={"2xl"}>Best Selling Products</Text>
           <HStack mt="5" gap="5" overflowX="auto" whiteSpace="nowrap" pb="4" w="full">
-            <Box flexShrink={0}>
-              <Image width={250} height={250} mx={"auto"} borderRadius={"2xl"} src="https://images.unsplash.com/photo-1527814050087-3793815479db?q=80&w=1028&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-              <Text>Logitech</Text>
-              <Text fontWeight={"medium"}>$299.99</Text>
+            <Box flexShrink={0} w={{ base: "150px", md: "200px", lg: "250px" }}>
+              <Image w="100%" h="auto" aspectRatio="1/1" mx={"auto"} borderRadius={"2xl"} src="https://images.unsplash.com/photo-1527814050087-3793815479db?q=80&w=1028&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+              <Text textAlign={"center"} mt="2">Logitech</Text>
+              <Text textAlign={"center"} fontWeight={"medium"}>$299.99</Text>
             </Box>
-            <Box flexShrink={0}>
-              <Image width={250} height={250} mx={"auto"} borderRadius={"2xl"} src="https://images.unsplash.com/photo-1695678458092-f01ccb465ae7?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-              <Text>Keyboard Acron</Text>
-              <Text fontWeight={"medium"}>$299.99</Text>
+            <Box flexShrink={0} w={{ base: "150px", md: "200px", lg: "250px" }}>
+              <Image w="100%" h="auto" aspectRatio="1/1" mx={"auto"} borderRadius={"2xl"} src="https://images.unsplash.com/photo-1695678458092-f01ccb465ae7?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+              <Text textAlign={"center"} mt="2">Keyboard Acron</Text>
+              <Text textAlign={"center"} fontWeight={"medium"}>$299.99</Text>
             </Box>
-            <Box flexShrink={0}>
-              <Image width={250} height={250} mx={"auto"} borderRadius={"2xl"} src="https://images.unsplash.com/photo-1542272604-787c3835535d?q=80&w=1026&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-              <Text>Men's Denim</Text>
-              <Text fontWeight={"medium"}>$299.99</Text>
+            <Box flexShrink={0} w={{ base: "150px", md: "200px", lg: "250px" }}>
+              <Image w="100%" h="auto" aspectRatio="1/1" mx={"auto"} borderRadius={"2xl"} src="https://images.unsplash.com/photo-1542272604-787c3835535d?q=80&w=1026&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+              <Text textAlign={"center"} mt="2">Men's Denim</Text>
+              <Text textAlign={"center"} fontWeight={"medium"}>$299.99</Text>
             </Box>
-            <Box flexShrink={0}>
-              <Image width={250} height={250} mx={"auto"} borderRadius={"2xl"} src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-              <Text>Men's Shoes</Text>
-              <Text fontWeight={"medium"}>$299.99</Text>
+            <Box flexShrink={0} w={{ base: "150px", md: "200px", lg: "250px" }}>
+              <Image w="100%" h="auto" aspectRatio="1/1" mx={"auto"} borderRadius={"2xl"} src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+              <Text textAlign={"center"} mt="2">Men's Shoes</Text>
+              <Text textAlign={"center"} fontWeight={"medium"}>$299.99</Text>
             </Box>
           </HStack>
         </Box>
