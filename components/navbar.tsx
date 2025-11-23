@@ -41,11 +41,21 @@ export default async function Navbar() {
                             </Button>
                         </form> */}
                         <Button variant={"ghost"} asChild>
-                            <Link href="/login">
-                                <Icon size={"md"}>
-                                    <FaRegUser />
-                                </Icon>
-                            </Link>
+                            {
+                                session?.user ? (
+                                    <Link href="#">
+                                        <Icon size={"md"}>
+                                            <FaRegUser />
+                                        </Icon>
+                                    </Link>
+                                ) : (
+                                    <Link href="/login">
+                                        <Icon size={"md"}>
+                                            <FaRegUser />
+                                        </Icon>
+                                    </Link>
+                                )
+                            }
                         </Button>
                         <Link href="/cart">
                             <Icon size={"md"}>

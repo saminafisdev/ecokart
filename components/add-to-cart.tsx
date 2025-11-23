@@ -1,9 +1,8 @@
 "use client"
 
 import { addToCart } from "@/lib/actions";
-import { Button, ButtonGroup } from "@chakra-ui/react"
+import { Button } from "@chakra-ui/react"
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 interface AddToCartButtonProps {
     productId: string;
@@ -13,10 +12,6 @@ interface AddToCartButtonProps {
 }
 
 export function AddToCartButton({ productId, userId, stock, isProductInCart }: AddToCartButtonProps) {
-    if (!userId) {
-        redirect("/login");
-    }
-
     return (
         isProductInCart ? (
             <Button size={{ base: "lg", md: "xl" }}
