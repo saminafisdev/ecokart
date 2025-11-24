@@ -1,7 +1,8 @@
-import { Box, Button, Container, Flex, HStack, Icon, Input, InputGroup, Text, Badge } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, HStack, Icon, Input, InputGroup, Text, Badge, Menu } from "@chakra-ui/react";
 import { FaRegHeart, FaRegUser } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
+import { LuLogOut, LuLogIn } from "react-icons/lu";
 import Link from "next/link";
 import { signOutAction } from "@/app/actions/auth";
 import { getServerSession } from "@/lib/get-server-session";
@@ -37,38 +38,65 @@ export default async function Navbar() {
                     </Box>
 
                     <HStack gap={0} order={{ base: 2, md: 3 }}>
-                        {/* <form action={signOutAction}>
-                            <Button type="submit" size={"md"} variant={"ghost"}>
-                                <FaRegUser />
-                                {
-                                    session?.user && (
-                                        <Text>Welcome {session.user.name}</Text>
-                                    )
-                                }
-                            </Button>
-                        </form> */}
-                        <Button variant={"ghost"} asChild>
-                            {
-                                session?.user ? (
-                                    <Link href="#">
-                                        <Icon size={"md"}>
-                                            <FaRegUser />
-                                        </Icon>
-                                    </Link>
-                                ) : (
-                                    <Link href="/login">
-                                        <Icon size={"md"}>
-                                            <FaRegUser />
-                                        </Icon>
-                                    </Link>
-                                )
-                            }
-                        </Button>
+                        {/* User Menu */}
+                        <Menu.Root>
+                            <Menu.Trigger asChild>
+                                <Button variant={"ghost"}>
+                                    <Icon size={"md"}>
+                                        <FaRegUser />
+                                    </Icon>
+                                </Button>
+                            </Menu.Trigger>
+                            <Menu.Positioner>
+                                <Menu.Content>
+                                    {session?.user ? (
+                                        <>
+                                            <Menu.Item value="profile" disabled>
+                                                <Text fontWeight="semibold">{session.user.name}</Text>
+                                            </Menu.Item>
+                                            <Menu.Item value="wishlist" asChild display={{ base: "flex", md: "none" }}>
+                                                <Link href="/wishlist">
+                                                    <FaRegHeart />
+                                                    Wishlist
+                                                </Link>
+                                            </Menu.Item>
+                                            <Menu.Item value="logout" asChild>
+                                                <form action={signOutAction}>
+                                                    <button type="submit" style={{ display: "flex", alignItems: "center", gap: "8px", width: "100%" }}>
+                                                        <LuLogOut />
+                                                        Logout
+                                                    </button>
+                                                </form>
+                                            </Menu.Item>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Menu.Item value="login" asChild>
+                                                <Link href="/login">
+                                                    <LuLogIn />
+                                                    Login
+                                                </Link>
+                                            </Menu.Item>
+                                            <Menu.Item value="signup" asChild>
+                                                <Link href="/signup">
+                                                    <FaRegUser />
+                                                    Sign Up
+                                                </Link>
+                                            </Menu.Item>
+                                        </>
+                                    )}
+                                </Menu.Content>
+                            </Menu.Positioner>
+                        </Menu.Root>
+
+                        {/* Wishlist - Desktop only */}
                         <Button variant={"ghost"} asChild display={{ base: "none", md: "inline-flex" }}>
                             <Link href="/wishlist">
                                 <FaRegHeart />
                             </Link>
                         </Button>
+
+                        {/* Cart */}
                         <Button variant={"ghost"} asChild position="relative">
                             <Link href="/cart">
                                 <Icon size={"md"}>
