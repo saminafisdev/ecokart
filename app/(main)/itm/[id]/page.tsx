@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Carousel, Heading, Image, Stack, Text } from "@cha
 import SimilarItems from "@/components/similar-items";
 import ProductDetails from "@/components/product-details";
 import prisma from "@/lib/prisma";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getServerSession } from "@/lib/get-server-session";
 import { AddToCartButton } from "@/components/add-to-cart";
 

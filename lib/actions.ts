@@ -9,7 +9,7 @@ export async function addToCart(userId: string, productId: string, quantity = 1)
         redirect("/login");
     }
 
-    return prisma.cartItem.upsert({
+    await prisma.cartItem.upsert({
         where: { userId_productId: { userId, productId } },
         update: { quantity: { increment: quantity } },
         create: { userId, productId, quantity },

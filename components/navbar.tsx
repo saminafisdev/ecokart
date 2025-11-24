@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, HStack, Icon, Input, InputGroup, Text } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, HStack, Icon, Input, InputGroup, Text, Badge } from "@chakra-ui/react";
 import { FaRegUser } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
@@ -14,6 +14,13 @@ export default async function Navbar() {
             parentCategoryId: null
         }
     })
+
+    // Get cart item count for logged-in users
+    const cartItemCount = session?.user
+        ? await prisma.cartItem.count({
+            where: { userId: session.user.id }
+        })
+        : 0;
 
     return (
         <Box as={"header"} pt="6" borderBottom={"1px solid"} borderColor={"gray.200"}>
@@ -57,11 +64,30 @@ export default async function Navbar() {
                                 )
                             }
                         </Button>
-                        <Link href="/cart">
-                            <Icon size={"md"}>
-                                <AiOutlineShoppingCart />
-                            </Icon>
-                        </Link>
+                        <Box position="relative">
+                            <Link href="/cart">
+                                <Icon size={"md"}>
+                                    <AiOutlineShoppingCart />
+                                </Icon>
+                            </Link>
+                            {cartItemCount > 0 && (
+                                <Badge
+                                    position="absolute"
+                                    top="-8px"
+                                    right="-8px"
+                                    colorPalette="green"
+                                    borderRadius="full"
+                                    fontSize="xs"
+                                    minW="20px"
+                                    h="20px"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                >
+                                    {cartItemCount}
+                                </Badge>
+                            )}
+                        </Box>
                     </HStack>
                 </Flex>
 

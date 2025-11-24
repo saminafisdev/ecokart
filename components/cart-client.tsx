@@ -13,7 +13,9 @@ import {
     Stack,
     Text,
     VStack,
-    EmptyState
+    EmptyState,
+    Input,
+    Group
 } from "@chakra-ui/react";
 import { LuShoppingCart, LuTrash2, LuArrowRight } from "react-icons/lu";
 import { useState, useTransition } from "react";
@@ -316,9 +318,8 @@ export default function CartClient({ initialCartItems }: CartClientProps) {
                         <Heading size="md" mb={4}>
                             Have a promo code?
                         </Heading>
-                        <HStack>
-                            <input
-                                type="text"
+                        <Group attached width={"full"}>
+                            <Input
                                 placeholder="Enter code"
                                 style={{
                                     flex: 1,
@@ -328,10 +329,10 @@ export default function CartClient({ initialCartItems }: CartClientProps) {
                                     fontSize: "14px"
                                 }}
                             />
-                            <Button colorPalette="green" size="md">
+                            <Button colorPalette="green" size="md" disabled>
                                 Apply
                             </Button>
-                        </HStack>
+                        </Group>
                     </Box>
                 </Box>
             </Stack>
