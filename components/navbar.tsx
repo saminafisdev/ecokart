@@ -66,7 +66,6 @@ export default async function Navbar() {
                 </Flex>
 
                 <HStack gap={10} mt="5" overflowX="auto" whiteSpace="nowrap" pb="2">
-                    <Text fontSize={"sm"}>All Categories</Text>
                     {
                         categories.map((category) => (
                             <Link href={`/categories/${category.slug}`} key={category.id}>
