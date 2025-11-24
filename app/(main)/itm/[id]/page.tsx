@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { getServerSession } from "@/lib/get-server-session";
 import { AddToCartButton } from "@/components/add-to-cart";
+import { AddToWishlistButton } from "@/components/add-to-wishlist";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
     const session = await getServerSession();
@@ -36,6 +37,17 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         : null;
 
     const isProductInCart = !!existingCartItem;
+
+    const existingWishlistItem = session?.user.id
+        ? await prisma.wishlistItem.findFirst({
+            where: {
+                productId: product.id,
+                userId: session.user.id,
+            },
+        })
+        : null;
+
+    const isInWishlist = !!existingWishlistItem;
 
 
     // Use product images or fallback
@@ -124,9 +136,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                             Buy it now
                         </Button>
                         <AddToCartButton productId={product.id} userId={session?.user.id} stock={product.stock} isProductInCart={isProductInCart} />
-                        <Button size={{ base: "lg", md: "xl" }} variant={"outline"} colorPalette={"green"} borderRadius={"full"}>
-                            Add to wishlist
-                        </Button>
+                        <AddToWishlistButton
+                            productId={product.id}
+                            userId={session?.user.id}
+                            isInWishlist={isInWishlist}
+                            wishlistItemId={existingWishlistItem?.id}
+                        />
                     </Stack>
                 </Box>
             </Stack>

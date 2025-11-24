@@ -1,5 +1,5 @@
 import { Box, Button, Container, Flex, HStack, Icon, Input, InputGroup, Text, Badge } from "@chakra-ui/react";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegHeart, FaRegUser } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
@@ -36,7 +36,7 @@ export default async function Navbar() {
                         </InputGroup>
                     </Box>
 
-                    <HStack gap={4} order={{ base: 2, md: 3 }}>
+                    <HStack gap={0} order={{ base: 2, md: 3 }}>
                         {/* <form action={signOutAction}>
                             <Button type="submit" size={"md"} variant={"ghost"}>
                                 <FaRegUser />
@@ -64,7 +64,12 @@ export default async function Navbar() {
                                 )
                             }
                         </Button>
-                        <Box position="relative">
+                        <Button variant={"ghost"} asChild display={{ base: "none", md: "inline-flex" }}>
+                            <Link href="/wishlist">
+                                <FaRegHeart />
+                            </Link>
+                        </Button>
+                        <Button variant={"ghost"} asChild position="relative">
                             <Link href="/cart">
                                 <Icon size={"md"}>
                                     <AiOutlineShoppingCart />
@@ -87,7 +92,7 @@ export default async function Navbar() {
                                     {cartItemCount}
                                 </Badge>
                             )}
-                        </Box>
+                        </Button>
                     </HStack>
                 </Flex>
 

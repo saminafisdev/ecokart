@@ -20,18 +20,19 @@ enum Role {
 }
 
 model User {
-  id            String     @id
+  id            String         @id
   name          String
   email         String
-  emailVerified Boolean    @default(false)
+  emailVerified Boolean        @default(false)
   image         String?
-  role          Role?      @default(CUSTOMER)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @default(now()) @updatedAt
+  role          Role?          @default(CUSTOMER)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
   stores        Store[]
   cartItems     CartItem[]
+  wishlistItems WishlistItem[]
   orders        Order[]
   reviews       Review[]
 
@@ -134,14 +135,29 @@ model Product {
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 
-  orderItems OrderItem[]
-  cartItems  CartItem[]
-  reviews    Review[]
+  orderItems    OrderItem[]
+  cartItems     CartItem[]
+  wishlistItems WishlistItem[]
+  reviews       Review[]
 }
 
 model CartItem {
   id        String   @id @default(cuid())
   quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
