@@ -128,9 +128,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                                         <Image
                                             src={product.imageUrl[0] || "https://placehold.co/600x400?text=No+Image"}
                                             alt={product.name}
-                                            objectFit="cover"
+                                            objectFit="contain"
                                             width="100%"
-                                            height="100%"
+                                            aspectRatio={4 / 3}
                                         />
                                     </Box>
                                     <Card.Body gap={2}>

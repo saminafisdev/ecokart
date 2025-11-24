@@ -45,7 +45,8 @@ export default async function CartPage() {
         price: Number(item.product.price),
         quantity: item.quantity,
         image: item.product.imageUrl[0] || "https://placehold.co/600x400?text=No+Image",
-        inStock: item.product.stock > 0
+        inStock: item.product.stock > 0,
+        stock: item.product.stock
     }));
 
     return <CartClient initialCartItems={formattedItems} />;

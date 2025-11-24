@@ -16,8 +16,10 @@ import {
     EmptyState
 } from "@chakra-ui/react";
 import { LuShoppingCart, LuTrash2, LuArrowRight } from "react-icons/lu";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
+import { deleteCartItem, updateCartItemQuantity } from "@/app/actions/cart";
+import { toaster } from "@/components/ui/toaster";
 
 export interface CartItem {
     id: string;
@@ -26,6 +28,7 @@ export interface CartItem {
     quantity: number;
     image: string;
     inStock: boolean;
+    stock: number;
 }
 
 interface CartClientProps {
@@ -34,18 +37,58 @@ interface CartClientProps {
 
 export default function CartClient({ initialCartItems }: CartClientProps) {
     const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems);
+    const [isPending, startTransition] = useTransition();
 
-    const updateQuantity = (id: string, newQuantity: number) => {
+    const updateQuantity = async (id: string, newQuantity: number) => {
         if (newQuantity < 1) return;
+
+        // Optimistic update
+        const previousItems = cartItems;
         setCartItems(items =>
             items.map(item =>
                 item.id === id ? { ...item, quantity: newQuantity } : item
             )
         );
+
+        startTransition(async () => {
+            const result = await updateCartItemQuantity(id, newQuantity);
+
+            if (!result.success) {
+                // Revert on error
+                setCartItems(previousItems);
+                toaster.create({
+                    title: "Error",
+                    description: result.error || "Failed to update quantity",
+                    type: "error",
+                });
+            }
+        });
     };
 
-    const removeItem = (id: string) => {
+    const removeItem = async (id: string) => {
+        // Optimistic update
+        const previousItems = cartItems;
         setCartItems(items => items.filter(item => item.id !== id));
+
+        startTransition(async () => {
+            const result = await deleteCartItem(id);
+
+            if (!result.success) {
+                // Revert on error
+                setCartItems(previousItems);
+                toaster.create({
+                    title: "Error",
+                    description: result.error || "Failed to remove item",
+                    type: "error",
+                });
+            } else {
+                toaster.create({
+                    title: "Item removed",
+                    description: "Item has been removed from your cart",
+                    type: "success",
+                });
+            }
+        });
     };
 
     const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -128,9 +171,14 @@ export default function CartClient({ initialCartItems }: CartClientProps) {
                                             </Text>
                                         )}
                                         {item.inStock && (
-                                            <Text color="green.600" fontSize="sm" fontWeight="semibold">
-                                                In Stock
-                                            </Text>
+                                            <VStack alignItems="flex-start" gap={1}>
+                                                <Text color="green.600" fontSize="sm" fontWeight="semibold">
+                                                    In Stock
+                                                </Text>
+                                                <Text color="gray.600" fontSize="xs">
+                                                    {item.stock} {item.stock === 1 ? 'item' : 'items'} available
+                                                </Text>
+                                            </VStack>
                                         )}
                                     </Box>
 
@@ -149,9 +197,10 @@ export default function CartClient({ initialCartItems }: CartClientProps) {
                                                 value={item.quantity.toString()}
                                                 onValueChange={(e) => updateQuantity(item.id, parseInt(e.value) || 1)}
                                                 min={1}
-                                                max={99}
+                                                max={item.stock}
                                                 width="120px"
                                                 size="sm"
+                                                disabled={!item.inStock}
                                             >
                                                 <NumberInput.Input />
                                                 <NumberInput.Control>
